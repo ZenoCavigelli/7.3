@@ -1,0 +1,14 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: devops-quiz-database-pvc
+  labels:
+    app: devops-quiz-app
+    app.kubernetes.io/part-of: devops-quiz-app
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  volumeMode: Filesystem

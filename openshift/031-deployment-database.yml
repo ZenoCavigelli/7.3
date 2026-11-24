@@ -1,0 +1,57 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: devops-quiz-database
+  labels:
+    app: devops-quiz-app
+    app.kubernetes.io/part-of: devops-quiz-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: devops-quiz-database
+  template:
+    metadata:
+      labels:
+        app: devops-quiz-database
+    spec:
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: devops-quiz-database-pvc
+        - name: postgres-socket
+          emptyDir: {}
+      containers:
+        - name: devops-quiz-database
+          image: 'postgres:18.4'
+          env:
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: devops-quiz-database-secret
+                  key: database-name
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: devops-quiz-database-secret
+                  key: database-user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: devops-quiz-database-secret
+                  key: database-password
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 256Mi
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+            - name: postgres-socket
+              mountPath: /var/run/postgresql
+          imagePullPolicy: Always

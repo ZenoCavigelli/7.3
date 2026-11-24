@@ -1,0 +1,16 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: devops-quiz-frontend-route
+  labels:
+    app: devops-quiz-app
+    app.kubernetes.io/part-of: devops-quiz-app
+spec:
+  to:
+    kind: Service
+    name: devops-quiz-frontend-svc
+  port:
+    targetPort: devops-quiz-frontend-8080
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect

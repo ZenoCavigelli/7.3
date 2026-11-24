@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: devops-quiz-database-svc
+  labels:
+    app: devops-quiz-app
+    app.kubernetes.io/part-of: devops-quiz-app
+spec:
+  ports:
+    - name: devops-quiz-database-5432
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
+  selector:
+    app: devops-quiz-database

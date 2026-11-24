@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: devops-quiz-frontend-svc
+  labels:
+    app: devops-quiz-app
+    app.kubernetes.io/part-of: devops-quiz-app
+spec:
+  ports:
+    - name: devops-quiz-frontend-8080
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: devops-quiz-frontend

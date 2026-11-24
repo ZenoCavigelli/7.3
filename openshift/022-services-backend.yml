@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: devops-quiz-backend-svc
+  labels:
+    app: devops-quiz-app
+    app.kubernetes.io/part-of: devops-quiz-app
+spec:
+  ports:
+    - name: devops-quiz-backend-3000
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+  selector:
+    app: devops-quiz-backend

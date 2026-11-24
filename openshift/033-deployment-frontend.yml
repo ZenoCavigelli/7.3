@@ -1,0 +1,36 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: devops-quiz-frontend
+  labels:
+    app: devops-quiz-app
+    app.kubernetes.io/part-of: devops-quiz-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: devops-quiz-frontend
+  template:
+    metadata:
+      labels:
+        app: devops-quiz-frontend
+    spec:
+      containers:
+        - name: devops-quiz-frontend
+          image: ghcr.io/zenocavigelli/devops-quiz-frontend:v1
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+            - name: BACKEND_URL
+              value: 'https://devops-quiz-backend-route-$(NAMESPACE).apps.exoscale-ch-gva-2-0.appuio.cloud'
+          resources:
+            limits:
+              cpu: 300m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          imagePullPolicy: Always
